@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Melina Rivera — Full Stack Developer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:        #0D0D0F;
+      --bg2:       #13131A;
+      --bg3:       #1A1A24;
+      --border:    rgba(255,255,255,0.07);
+      --terra:     #E07850;
+      --terra-dim: rgba(224,120,80,0.15);
+      --gold:      #C9A84C;
+      --white:     #F0EDE8;
+      --muted:     rgba(240,237,232,0.45);
+      --accent:    #6C8EAD;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--white); overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--terra); border-radius: 3px; }
+
+    /* LOADER */
+    #loader { position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; z-index:9999; transition:opacity .7s,visibility .7s; }
+    #loader.hidden { opacity:0; visibility:hidden; }
+    .loader-inner { text-align:center; }
+    .loader-name { font-family:'Playfair Display',serif; font-size:1.8rem; color:var(--terra); letter-spacing:.05em; }
+    .loader-bar { width:180px; height:2px; background:rgba(255,255,255,.08); border-radius:2px; margin:.8rem auto 0; overflow:hidden; }
+    .loader-progress { height:100%; background:var(--terra); border-radius:2px; animation:load 1s ease forwards; }
+    @keyframes load { from{width:0} to{width:100%} }
+
+    /* NAV */
+    .navbar { background: rgba(13,13,15,.92) !important; backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:.9rem 0; transition:box-shadow .3s; }
+    .navbar.scrolled { box-shadow:0 4px 32px rgba(0,0,0,.3); }
+    .navbar-brand { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--terra) !important; letter-spacing:.03em; }
+    .nav-link { color:var(--muted) !important; font-size:.85rem; font-weight:500; letter-spacing:.04em; padding:.4rem 1rem !important; transition:color .2s; }
+    .nav-link:hover, .nav-link.active { color:var(--white) !important; }
+    .btn-hire { background:var(--terra); color:white !important; border-radius:2rem; padding:.4rem 1.3rem !important; font-size:.85rem !important; transition:background .2s,transform .2s !important; }
+    .btn-hire:hover { background:#c5623a !important; transform:translateY(-1px); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 7rem 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 40%, rgba(224,120,80,.08) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(108,142,173,.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .72rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--terra); margin-bottom: 1.5rem;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block;
+      width: 24px; height: 1px; background: var(--terra);
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      line-height: 1.05; font-weight: 700;
+      margin-bottom: 1rem; color: var(--white);
+    }
+    .hero h1 .name { color: var(--terra); font-style: italic; }
+
+    .hero-desc {
+      font-size: 1rem; line-height: 1.8; color: var(--muted);
+      font-weight: 300; max-width: 460px; margin-bottom: 2.5rem;
+    }
+
+    .hero-actions { display:flex; gap:1rem; flex-wrap:wrap; align-items:center; }
+    .btn-main { background:var(--terra); color:white; border:none; border-radius:2rem; padding:.85rem 2rem; font-size:.9rem; font-weight:500; cursor:pointer; transition:background .2s,transform .2s; text-decoration:none; display:inline-block; }
+    .btn-main:hover { background:#c5623a; transform:translateY(-2px); color:white; }
+    .btn-outline { border:1px solid rgba(255,255,255,.15); color:var(--muted); border-radius:2rem; padding:.85rem 2rem; font-size:.9rem; font-weight:500; text-decoration:none; display:inline-block; transition:border-color .2s,color .2s; }
+    .btn-outline:hover { border-color:rgba(255,255,255,.4); color:var(--white); }
+
+    /* Social pills */
+    .social-links { display:flex; gap:.7rem; margin-top:2rem; }
+    .social-pill {
+      display:flex; align-items:center; gap:.4rem;
+      background:rgba(255,255,255,.05); border:1px solid var(--border);
+      border-radius:2rem; padding:.4rem 1rem; font-size:.78rem; color:var(--muted);
+      text-decoration:none; transition:all .2s;
+    }
+    .social-pill:hover { background:var(--terra-dim); border-color:rgba(224,120,80,.3); color:var(--terra); }
+
+    /* Hero visual */
+    .hero-visual { display:flex; justify-content:center; align-items:center; }
+    .avatar-wrap {
+      position: relative;
+      width: 340px; height: 340px;
+    }
+    .avatar-ring {
+      position: absolute; inset: -12px;
+      border-radius: 50%;
+      border: 1px solid rgba(224,120,80,.2);
+      animation: spin 20s linear infinite;
+    }
+    .avatar-ring::after {
+      content: '';
+      position: absolute; top: -4px; left: 50%;
+      width: 8px; height: 8px;
+      background: var(--terra); border-radius: 50%;
+      transform: translateX(-50%);
+    }
+    @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+    .avatar-circle {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: linear-gradient(135deg, var(--bg3), var(--bg2));
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 7rem; position: relative; overflow: hidden;
+    }
+    .avatar-circle::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 30% 30%, rgba(224,120,80,.08), transparent 60%);
+    }
+
+    /* Floating cards */
+    .float-card {
+      position: absolute;
+      background: var(--bg2); border:1px solid var(--border);
+      border-radius: .8rem; padding: .7rem 1rem;
+      font-size: .78rem; display:flex; align-items:center; gap:.6rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,.3);
+    }
+    .float-card-1 { bottom: 2rem; left: -3rem; animation: float1 4s ease-in-out infinite; }
+    .float-card-2 { top: 2rem; right: -2rem; animation: float2 5s ease-in-out infinite; }
+    @keyframes float1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+    .float-dot { width:8px; height:8px; border-radius:50%; background:var(--terra); flex-shrink:0; animation:blink 2s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* STATS ROW */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 1rem; overflow: hidden;
+      margin-top: 2.5rem;
+    }
+    .stat-box { background:var(--bg2); padding:1.5rem; text-align:center; }
+    .stat-n { font-family:'Playfair Display',serif; font-size:1.8rem; color:var(--terra); display:block; }
+    .stat-l { font-size:.72rem; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; margin-top:.2rem; }
+
+    /* SECTION */
+    section { padding: 5rem 0; }
+    .section-chip {
+      display:inline-flex; align-items:center; gap:.4rem;
+      background:var(--terra-dim); border:1px solid rgba(224,120,80,.2);
+      border-radius:2rem; padding:.3rem .9rem; font-size:.72rem; font-weight:600;
+      letter-spacing:.1em; text-transform:uppercase; color:var(--terra); margin-bottom:1rem;
+    }
+    .section-title { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,3vw,2.5rem); color:var(--white); line-height:1.2; }
+    .section-title em { font-style:italic; color:var(--terra); }
+
+    /* SOBRE MÍ */
+    .sobre-bg { background:var(--bg2); border-radius:1.5rem; padding:3rem; border:1px solid var(--border); }
+
+    /* SKILLS */
+    .skill-tag {
+      display:inline-flex; align-items:center; gap:.4rem;
+      background:rgba(255,255,255,.04); border:1px solid var(--border);
+      border-radius:.6rem; padding:.45rem .9rem; font-size:.82rem; color:var(--muted);
+      transition:all .2s;
+    }
+    .skill-tag:hover { background:var(--terra-dim); border-color:rgba(224,120,80,.3); color:var(--white); }
+    .skill-tag.learning { border-color:rgba(201,168,76,.2); color:var(--gold); background:rgba(201,168,76,.05); }
+
+    /* PROYECTOS */
+    .project-card {
+      background:var(--bg2); border:1px solid var(--border); border-radius:1.2rem;
+      overflow:hidden; transition:transform .3s,border-color .3s,box-shadow .3s; height:100%;
+    }
+    .project-card:hover { transform:translateY(-6px); border-color:rgba(224,120,80,.25); box-shadow:0 16px 48px rgba(0,0,0,.3); }
+    .project-thumb {
+      aspect-ratio:16/9; display:flex; align-items:center; justify-content:center;
+      font-size:4rem; position:relative; overflow:hidden;
+    }
+    .pt1 { background:linear-gradient(135deg,#1A120A,#2A1A0E); }
+    .pt2 { background:linear-gradient(135deg,#0A1A1A,#0E2020); }
+    .pt3 { background:linear-gradient(135deg,#0A0A1A,#0E0E2A); }
+    .project-thumb-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(13,13,15,.8) 0%, transparent 60%);
+    }
+    .project-badge {
+      position:absolute; top:.8rem; left:.8rem;
+      background:rgba(13,13,15,.7); backdrop-filter:blur(8px);
+      border:1px solid var(--border); border-radius:2rem;
+      padding:.25rem .7rem; font-size:.65rem; font-weight:600;
+      letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+    }
+    .project-info { padding:1.5rem; }
+    .project-name { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--white); margin-bottom:.5rem; }
+    .project-desc { font-size:.82rem; line-height:1.6; color:var(--muted); margin-bottom:1.2rem; }
+    .project-tags { display:flex; gap:.4rem; flex-wrap:wrap; margin-bottom:1.2rem; }
+    .project-tag { background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:.4rem; padding:.2rem .6rem; font-size:.7rem; color:var(--muted); }
+    .project-links { display:flex; gap:.8rem; }
+    .project-link {
+      display:inline-flex; align-items:center; gap:.3rem;
+      font-size:.78rem; font-weight:500; text-decoration:none;
+      color:var(--terra); transition:color .2s;
+    }
+    .project-link:hover { color:#f09070; }
+    .project-link.secondary { color:var(--muted); }
+    .project-link.secondary:hover { color:var(--white); }
+
+    /* SERVICIOS */
+    .service-card {
+      background:var(--bg2); border:1px solid var(--border); border-radius:1.2rem;
+      padding:2rem; transition:border-color .3s,transform .3s; height:100%;
+    }
+    .service-card:hover { border-color:rgba(224,120,80,.25); transform:translateY(-4px); }
+    .service-icon { font-size:2rem; margin-bottom:1rem; display:block; }
+    .service-name { font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--white); margin-bottom:.6rem; }
+    .service-desc { font-size:.82rem; line-height:1.7; color:var(--muted); }
+    .service-price { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--terra); margin-top:1rem; display:block; }
+
+    /* CONTACTO */
+    .contact-bg { background:var(--bg2); border:1px solid var(--border); border-radius:1.5rem; padding:3rem; }
+    .contact-input {
+      width:100%; background:rgba(255,255,255,.04); border:1px solid var(--border);
+      border-radius:.8rem; padding:.85rem 1.1rem; color:var(--white);
+      font-family:'DM Sans',sans-serif; font-size:.9rem; outline:none;
+      transition:border-color .2s;
+    }
+    .contact-input:focus { border-color:rgba(224,120,80,.4); }
+    .contact-input::placeholder { color:var(--muted); }
+    textarea.contact-input { resize:vertical; min-height:120px; }
+    .contact-label { font-size:.78rem; font-weight:500; letter-spacing:.04em; color:var(--muted); margin-bottom:.4rem; display:block; }
+
+    /* FOOTER */
+    footer { background:var(--bg); border-top:1px solid var(--border); padding:2rem 0; }
+    .footer-text { font-size:.82rem; color:var(--muted); }
+
+    /* BACK TO TOP */
+    #backToTop { position:fixed; bottom:2rem; right:2rem; background:var(--terra); color:white; border:none; border-radius:50%; width:42px; height:42px; cursor:pointer; z-index:500; opacity:0; transform:scale(0); transition:opacity .3s,transform .3s; display:flex; align-items:center; justify-content:center; font-size:1rem; }
+    #backToTop.visible { opacity:1; transform:scale(1); }
+
+    /* TOAST */
+    #toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(120%); background:var(--bg2); border:1px solid var(--border); color:var(--white); border-radius:2rem; padding:.7rem 1.5rem; font-size:.85rem; z-index:9000; transition:transform .4s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; box-shadow:0 8px 32px rgba(0,0,0,.3); }
+    #toast.show { transform:translateX(-50%) translateY(0); }
+
+    /* FADE IN */
+    .fade-in { opacity:0; transform:translateY(24px); transition:opacity .6s ease,transform .6s ease; }
+    .fade-in.visible { opacity:1; transform:translateY(0); }
+    .fd1{transition-delay:.1s} .fd2{transition-delay:.2s} .fd3{transition-delay:.3s}
+
+    .navbar-toggler{border:none} .navbar-toggler:focus{box-shadow:none}
+    .navbar-toggler-icon { filter:invert(1); }
+
+    @media(max-width:992px) {
+      .hero { grid-template-columns:1fr; padding-top:6rem; text-align:center; gap:3rem; }
+      .hero-desc { margin:0 auto 2.5rem; }
+      .hero-actions { justify-content:center; }
+      .social-links { justify-content:center; }
+      .hero-visual { order:-1; }
+      .avatar-wrap { width:220px; height:220px; }
+      .float-card-1 { left:-1rem; bottom:0; }
+      .float-card-2 { right:-1rem; top:0; }
+      .stats-row { grid-template-columns:1fr; }
+      .stat-box + .stat-box { border-top:1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loader">
+    <div class="loader-inner">
+      <div class="loader-name">Melina Rivera</div>
+      <div class="loader-bar"><div class="loader-progress"></div></div>
+    </div>
+  </div>
+
+  <button id="backToTop"><i class="bi bi-arrow-up"></i></button>
+  <div id="toast">✓ Mensaje enviado</div>
+
+  <!-- NAV -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">MR.</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <i class="bi bi-list fs-4" style="color:var(--muted)"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+          <li class="nav-item"><a class="nav-link" href="#sobre">Sobre mí</a></li>
+          <li class="nav-item"><a class="nav-link" href="#proyectos">Proyectos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+          <li class="nav-item ms-lg-2">
+            <a class="nav-link btn-hire" href="#contacto">Contrátame</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="container">
+    <section class="hero">
+      <div>
+        <div class="hero-eyebrow">Full Stack Developer</div>
+        <h1>Hola, soy<br><span class="name">Melina Rivera</span></h1>
+        <p class="hero-desc">Construyo webs que ayudan a <strong style="color:var(--white);font-weight:500">pymes y autónomos</strong> a tener presencia digital real — que genere clientes, no solo visitas.</p>
+        <div class="hero-actions">
+          <a href="#proyectos" class="btn-main">Ver mis proyectos</a>
+          <a href="#contacto" class="btn-outline">Hablemos →</a>
+        </div>
+        <div class="social-links">
+          <a href="https://github.com/melinarivera" class="social-pill" target="_blank">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+          <a href="https://linkedin.com/in/melinarivera" class="social-pill" target="_blank">
+            <i class="bi bi-linkedin"></i> LinkedIn
+          </a>
+          <a href="mailto:melina.rivera@gmail.com" class="social-pill">
+            <i class="bi bi-envelope"></i> Email
+          </a>
+        </div>
+        <div class="stats-row fade-in">
+          <div class="stat-box"><span class="stat-n">1+</span><span class="stat-l">Proyectos</span></div>
+          <div class="stat-box"><span class="stat-n">∞</span><span class="stat-l">Ganas</span></div>
+          <div class="stat-box"><span class="stat-n">100%</span><span class="stat-l">Compromiso</span></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="avatar-wrap">
+          <div class="avatar-ring"></div>
+          <div class="avatar-circle">👩‍💻</div>
+          <div class="float-card float-card-1">
+            <div class="float-dot"></div>
+            <span style="color:var(--white)">Disponible para proyectos</span>
+          </div>
+          <div class="float-card float-card-2">
+            <span>🚀</span>
+            <span style="color:var(--white)">Full Stack en formación</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- SOBRE MÍ -->
+  <section id="sobre">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-5 fade-in">
+          <div class="section-chip"><i class="bi bi-person"></i> Sobre mí</div>
+          <h2 class="section-title mb-4">Desarrollo web con <em>propósito</em></h2>
+          <p style="color:var(--muted);line-height:1.8;font-size:.95rem" class="mb-3">Soy Melina Rivera, desarrolladora web full stack en formación con una misión clara: <strong style="color:var(--white)">ayudar a pymes y autónomos a tener presencia digital real</strong> que les genere resultados.</p>
+          <p style="color:var(--muted);line-height:1.8;font-size:.95rem" class="mb-4">Creo que una pequeña empresa bien posicionada en internet puede competir con cualquiera. Estoy construyendo las herramientas para hacerlo posible — empezando por una SaaS enfocada en negocios locales.</p>
+          <a href="#contacto" class="btn-main">Trabajemos juntos</a>
+        </div>
+        <div class="col-lg-6 offset-lg-1 fade-in fd1">
+          <div class="sobre-bg">
+            <p class="section-chip mb-3"><i class="bi bi-code-slash"></i> Stack tecnológico</p>
+            <p style="font-size:.78rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.8rem">Actualmente trabajando con</p>
+            <div class="d-flex gap-2 flex-wrap mb-4">
+              <span class="skill-tag">🌐 HTML5</span>
+              <span class="skill-tag">🎨 CSS3</span>
+              <span class="skill-tag">⚡ JavaScript</span>
+              <span class="skill-tag">📦 Bootstrap 5</span>
+            </div>
+            <p style="font-size:.78rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.8rem">Próximamente aprendiendo</p>
+            <div class="d-flex gap-2 flex-wrap">
+              <span class="skill-tag learning">⚛️ React</span>
+              <span class="skill-tag learning">🔺 Angular</span>
+              <span class="skill-tag learning">🍃 MongoDB</span>
+              <span class="skill-tag learning">🟢 Node.js</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROYECTOS -->
+  <section id="proyectos" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div class="container">
+      <div class="text-center mb-5 fade-in">
+        <div class="section-chip mx-auto"><i class="bi bi-grid"></i> Proyectos</div>
+        <h2 class="section-title">Lo que he <em>construido</em></h2>
+      </div>
+      <div class="row g-4">
+        <!-- Proyecto 1 — Alma de Barrio -->
+        <div class="col-md-6 col-lg-4 fade-in">
+          <div class="project-card">
+            <div class="project-thumb pt1">
+              🧺
+              <div class="project-thumb-overlay"></div>
+              <div class="project-badge">Landing Page</div>
+            </div>
+            <div class="project-info">
+              <div class="project-name">Alma de Barrio</div>
+              <div class="project-desc">Tienda artesanal local con carrito de compras funcional, filtros por categoría y animaciones CSS.</div>
+              <div class="project-tags">
+                <span class="project-tag">HTML</span>
+                <span class="project-tag">CSS</span>
+                <span class="project-tag">JavaScript</span>
+                <span class="project-tag">Bootstrap 5</span>
+              </div>
+              <div class="project-links">
+                <a href="https://melinarivera.github.io/Alma-de-barrio/" class="project-link" target="_blank">
+                  <i class="bi bi-box-arrow-up-right"></i> Ver en vivo
+                </a>
+                <a href="https://github.com/melinarivera/Alma-de-barrio" class="project-link secondary" target="_blank">
+                  <i class="bi bi-github"></i> Código
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Proyecto 2 — Próximamente -->
+        <div class="col-md-6 col-lg-4 fade-in fd1">
+          <div class="project-card" style="opacity:.6">
+            <div class="project-thumb pt2" style="font-size:2.5rem;flex-direction:column;gap:.5rem">
+              <span>🔨</span>
+              <div class="project-thumb-overlay"></div>
+              <div class="project-badge">En construcción</div>
+            </div>
+            <div class="project-info">
+              <div class="project-name">Proyecto 2</div>
+              <div class="project-desc">App web completa con autenticación, CRUD y base de datos. Próximamente.</div>
+              <div class="project-tags">
+                <span class="project-tag">React</span>
+                <span class="project-tag">Node.js</span>
+                <span class="project-tag">MongoDB</span>
+              </div>
+              <div class="project-links">
+                <span style="font-size:.78rem;color:var(--muted)">⏳ Próximamente</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Proyecto 3 — SaaS -->
+        <div class="col-md-6 col-lg-4 fade-in fd2">
+          <div class="project-card" style="opacity:.6">
+            <div class="project-thumb pt3" style="font-size:2.5rem;flex-direction:column;gap:.5rem">
+              <span>💡</span>
+              <div class="project-thumb-overlay"></div>
+              <div class="project-badge">En diseño</div>
+            </div>
+            <div class="project-info">
+              <div class="project-name">SaaS para Pymes</div>
+              <div class="project-desc">Plataforma web para ayudar a negocios locales a gestionar su presencia digital. Mi gran proyecto.</div>
+              <div class="project-tags">
+                <span class="project-tag">Full Stack</span>
+                <span class="project-tag">SaaS</span>
+              </div>
+              <div class="project-links">
+                <span style="font-size:.78rem;color:var(--muted)">💡 En desarrollo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section id="servicios">
+    <div class="container">
+      <div class="text-center mb-5 fade-in">
+        <div class="section-chip mx-auto"><i class="bi bi-briefcase"></i> Servicios</div>
+        <h2 class="section-title">¿En qué puedo <em>ayudarte</em>?</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-3 fade-in">
+          <div class="service-card">
+            <span class="service-icon">🌐</span>
+            <div class="service-name">Landing Pages</div>
+            <div class="service-desc">Páginas de aterrizaje rápidas, atractivas y optimizadas para convertir visitas en clientes.</div>
+            <span class="service-price">Desde €200</span>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 fade-in fd1">
+          <div class="service-card">
+            <span class="service-icon">🏪</span>
+            <div class="service-name">Web para Pymes</div>
+            <div class="service-desc">Sitio web completo para tu negocio local: presentación, servicios, contacto y posicionamiento.</div>
+            <span class="service-price">Desde €400</span>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 fade-in fd2">
+          <div class="service-card">
+            <span class="service-icon">📱</span>
+            <div class="service-name">Diseño Responsive</div>
+            <div class="service-desc">Tu web perfecta en móvil, tablet y escritorio. El 70% del tráfico viene del móvil.</div>
+            <span class="service-price">Incluido siempre</span>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 fade-in fd3">
+          <div class="service-card">
+            <span class="service-icon">🔧</span>
+            <div class="service-name">Mantenimiento</div>
+            <div class="service-desc">Actualizaciones, mejoras y soporte continuo para que tu web siempre esté al día.</div>
+            <span class="service-price">Desde €50/mes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto" style="background:var(--bg2);border-top:1px solid var(--border)">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="text-center mb-5 fade-in">
+            <div class="section-chip mx-auto"><i class="bi bi-chat-heart"></i> Contacto</div>
+            <h2 class="section-title">¿Tienes un proyecto <em>en mente</em>?</h2>
+            <p style="color:var(--muted);font-size:.95rem;margin-top:.8rem">Cuéntame tu idea y te respondo en menos de 24h.</p>
+          </div>
+          <div class="contact-bg fade-in">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="contact-label">Tu nombre</label>
+                <input type="text" class="contact-input" id="c-name" placeholder="Ana García"/>
+              </div>
+              <div class="col-md-6">
+                <label class="contact-label">Tu email</label>
+                <input type="email" class="contact-input" id="c-email" placeholder="ana@negocio.com"/>
+              </div>
+              <div class="col-12">
+                <label class="contact-label">¿Qué necesitas?</label>
+                <select class="contact-input" id="c-service" style="cursor:pointer">
+                  <option value="" disabled selected>Selecciona un servicio</option>
+                  <option>Landing page para mi negocio</option>
+                  <option>Web completa para mi empresa</option>
+                  <option>Mantenimiento de web existente</option>
+                  <option>Consultoría digital</option>
+                  <option>Otro</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="contact-label">Cuéntame tu proyecto</label>
+                <textarea class="contact-input" id="c-msg" placeholder="Tengo una tienda de ropa y quiero tener presencia online..."></textarea>
+              </div>
+              <div class="col-12">
+                <button class="btn-main w-100" onclick="sendContact()" style="padding:1rem;font-size:1rem">
+                  Enviar mensaje <i class="bi bi-send ms-1"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <div class="footer-text">© 2025 Melina Rivera. Todos los derechos reservados.</div>
+      <div class="footer-text">Hecho con ♥ y mucho café ☕</div>
+      <div class="d-flex gap-3">
+        <a href="https://github.com/melinarivera" style="color:var(--muted);font-size:1.1rem;transition:color .2s" target="_blank"><i class="bi bi-github"></i></a>
+        <a href="https://linkedin.com/in/melinarivera" style="color:var(--muted);font-size:1.1rem;transition:color .2s" target="_blank"><i class="bi bi-linkedin"></i></a>
+        <a href="mailto:melina.rivera@gmail.com" style="color:var(--muted);font-size:1.1rem;transition:color .2s"><i class="bi bi-envelope"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // LOADER
+    window.addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1000));
+
+    // NAV SCROLL
+    window.addEventListener('scroll', () => {
+      document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 50);
+      document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400);
+    });
+    document.getElementById('backToTop').addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+
+    // ACTIVE NAV
+    document.querySelectorAll('section[id]').forEach(s => {
+      new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            const a = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+            if (a) a.classList.add('active');
+          }
+        });
+      }, { threshold: 0.4 }).observe(s);
+    });
+
+    // FADE IN
+    const fo = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); fo.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => fo.observe(el));
+
+    // TOAST
+    let tt;
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.classList.add('show');
+      clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // CONTACTO
+    function sendContact() {
+      const name = document.getElementById('c-name').value.trim();
+      const email = document.getElementById('c-email').value.trim();
+      const msg = document.getElementById('c-msg').value.trim();
+      if (!name || !email || !msg) { showToast('⚠ Por favor rellena todos los campos'); return; }
+      if (!email.includes('@')) { showToast('⚠ Email no válido'); return; }
+      showToast(`✓ ¡Gracias ${name}! Te respondo pronto 🚀`);
+      document.getElementById('c-name').value = '';
+      document.getElementById('c-email').value = '';
+      document.getElementById('c-msg').value = '';
+    }
+  </script>
+</body>
+</html>
