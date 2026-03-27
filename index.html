@@ -195,8 +195,8 @@
         </div>
         <div class="social-links">
           <a href="https://github.com/melinarivera" class="social-pill" target="_blank"><i class="bi bi-github"></i> GitHub</a>
-          <a href="https://linkedin.com/in/melinarivera" class="social-pill" target="_blank"><i class="bi bi-linkedin"></i> LinkedIn</a>
-          <a href="mailto:melina.rivera@gmail.com" class="social-pill"><i class="bi bi-envelope"></i> Email</a>
+          <a href="https://www.linkedin.com/in/deliamelinarivera" class="social-pill" target="_blank"><i class="bi bi-linkedin"></i> LinkedIn</a>
+          
         </div>
         <div class="stats-row fade-in">
           <div class="stat-box"><span class="stat-n">2+</span><span class="stat-l">Proyectos</span></div>
@@ -399,11 +399,12 @@
             <p style="color:var(--muted);font-size:.95rem;margin-top:.8rem">Cuéntame tu idea y te respondo en menos de 24h.</p>
           </div>
           <div class="contact-bg fade-in">
+            <form id="contact-form" action="https://formspree.io/f/xbdplnyg" method="POST">
             <div class="row g-3">
-              <div class="col-md-6"><label class="contact-label">Tu nombre</label><input type="text" class="contact-input" id="c-name" placeholder="Ana García"/></div>
-              <div class="col-md-6"><label class="contact-label">Tu email</label><input type="email" class="contact-input" id="c-email" placeholder="ana@negocio.com"/></div>
+              <div class="col-md-6"><label class="contact-label">Tu nombre</label><input type="text" name="nombre" class="contact-input" id="c-name" placeholder="Ana García" required/></div>
+              <div class="col-md-6"><label class="contact-label">Tu email</label><input type="email" name="email" class="contact-input" id="c-email" placeholder="ana@negocio.com" required/></div>
               <div class="col-12"><label class="contact-label">¿Qué necesitas?</label>
-                <select class="contact-input" id="c-service" style="cursor:pointer">
+                <select name="servicio" class="contact-input" id="c-service" style="cursor:pointer">
                   <option value="" disabled selected>Selecciona un servicio</option>
                   <option>Landing page para mi negocio</option>
                   <option>Web completa para mi empresa</option>
@@ -412,8 +413,14 @@
                   <option>Otro</option>
                 </select>
               </div>
-              <div class="col-12"><label class="contact-label">Cuéntame tu proyecto</label><textarea class="contact-input" id="c-msg" placeholder="Tengo una tienda de ropa y quiero tener presencia online..."></textarea></div>
-              <div class="col-12"><button class="btn-main w-100" onclick="sendContact()" style="padding:1rem;font-size:1rem">Enviar mensaje <i class="bi bi-send ms-1"></i></button></div>
+              <div class="col-12"><label class="contact-label">Cuéntame tu proyecto</label><textarea name="mensaje" class="contact-input" id="c-msg" placeholder="Tengo una tienda de ropa y quiero tener presencia online..." required></textarea></div>
+              <div class="col-12"><button type="submit" class="btn-main w-100" style="padding:1rem;font-size:1rem">Enviar mensaje <i class="bi bi-send ms-1"></i></button></div>
+            </div>
+            </form>
+            <div id="form-success" style="display:none;text-align:center;padding:2rem 0">
+              <div style="font-size:3rem;margin-bottom:1rem">✅</div>
+              <h4 style="color:var(--white);font-family:'Playfair Display',serif;margin-bottom:.5rem">¡Mensaje enviado!</h4>
+              <p style="color:var(--muted);font-size:.9rem">Te respondo en menos de 24h. ¡Gracias por contactarme!</p>
             </div>
           </div>
         </div>
@@ -424,17 +431,17 @@
   <!-- FOOTER -->
   <footer>
     <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
-      <div class="footer-text">© 2025 Melina Rivera. Todos los derechos reservados.</div>
+      <div class="footer-text">© 2026 Melina Rivera. Todos los derechos reservados.</div>
       <div class="footer-text">Hecho con ♥ y mucho café ☕</div>
       <div class="d-flex gap-3">
         <a href="https://github.com/melinarivera" style="color:var(--muted);font-size:1.1rem;transition:color .2s" target="_blank"><i class="bi bi-github"></i></a>
-        <a href="https://linkedin.com/in/melinarivera" style="color:var(--muted);font-size:1.1rem;transition:color .2s" target="_blank"><i class="bi bi-linkedin"></i></a>
-        <a href="mailto:melina.rivera@gmail.com" style="color:var(--muted);font-size:1.1rem;transition:color .2s"><i class="bi bi-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/deliamelinarivera" style="color:var(--muted);font-size:1.1rem;transition:color .2s" target="_blank"><i class="bi bi-linkedin"></i></a>
+        
       </div>
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     window.addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1000));
     window.addEventListener('scroll', () => {
